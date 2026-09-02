@@ -55,4 +55,4 @@ A formal finite state machine implementation for recognizing C-style comments (`
 ---
 
 ## Full Transition Details
-![Alt Text](path/to/handwritten_nfa.png)
+![NFA Transition](handwritten_nfa.png)
