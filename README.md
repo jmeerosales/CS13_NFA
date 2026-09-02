@@ -13,46 +13,31 @@ A formal finite state machine implementation for recognizing C-style comments (`
 
 ---
 
-## Transition Function 
-
-- **State $q_0$ (Start state - looking for comment start `/`)**
-  - $\\delta(q_0, /) = \\{q_1\\}$
-  - $\\delta(q_0, *) = \\emptyset$
-  - $\\delta(q_0, j) = \\emptyset$
-
-- **State $q_1$ (Received initial `/` - looking for starting `*`)**
-  - $\\delta(q_1, *) = \\{q_2\\}$
-  - $\\delta(q_1, /) = \\emptyset$
-  - $\\delta(q_1, j) = \\emptyset$
-
-- **State $q_2$ (Inside comment body)**
-  - $\\delta(q_2, j) = \\{q_2\\}$
-  - $\\delta(q_2, /) = \\{q_2\\}$
-  - $\\delta(q_2, *) = \\{q_3\\}$
-
-- **State $q_3$ (Seen potential closing `*`)**
-  - $\\delta(q_3, /) = \\{q_4\\}$
-  - $\\delta(q_3, *) = \\{q_3\\}$
-  - $\\delta(q_3, j) = \\{q_2\\}$
-
-- **State $q_4$ (Accept state - comment cleanly closed)**
-  - $\\delta(q_4, j) = \\emptyset$
-  - $\\delta(q_4, *) = \\emptyset$
-  - $\\delta(q_4, /) = \\emptyset$
-
----
-
 ## Transition Table
 
-| Present State | Input `j` | Input `*` | Input `/` |
+| $\delta$ | $j$ | $*$ | $/$ |
 | :---: | :---: | :---: | :---: |
-| **$q_0$ (Start)** | $\\emptyset$ | $\\emptyset$ | $\\{q_1\\}$ |
-| **$q_1$** | $\\emptyset$ | $\\{q_2\\}$ | $\\emptyset$ |
-| **$q_2$** | $\\{q_2\\}$ | $\\{q_3\\}$ | $\\{q_2\\}$ |
-| **$q_3$** | $\\{q_2\\}$ | $\\{q_3\\}$ | $\\{q_4\\}$ |
-| **$q_4$ (Accept)** | $\\emptyset$ | $\\emptyset$ | $\\emptyset$ |
+| $\rightarrow q_0$ | $\emptyset$ | $\emptyset$ | $\{q_1\}$ |
+| $q_1$ | $\{q_0\}$ | $\{q_2\}$ | $\emptyset$ |
+| $q_2$ | $\{q_2\}$ | $\{q_2, q_3\}$ | $\{q_2\}$ |
+| $q_3$ | $\emptyset$ | $\{q_3\}$ | $\{q_4\}$ |
+| $*q_4$ | $\emptyset$ | $\emptyset$ | $\emptyset$ |
 
 ---
 
-## Full Transition Details
-![NFA Transition](handwritten_nfa.png)
+## Formal Transition Functions
+
+$$\begin{aligned}
+\delta(q_0, /) &= \{q_1\} & \delta(q_2, /) &= \{q_2\} & \delta(q_4, /) &= \emptyset \\
+\delta(q_0, *) &= \emptyset & \delta(q_2, *) &= \{q_2, q_3\} & \delta(q_4, *) &= \emptyset \\
+\delta(q_0, j) &= \emptyset & \delta(q_2, j) &= \{q_2\} & \delta(q_4, j) &= \emptyset \\
+\\
+\delta(q_1, /) &= \emptyset & \delta(q_3, /) &= \{q_4\} \\
+\delta(q_1, *) &= \{q_2\} & \delta(q_3, *) &= \{q_3\} \\
+\delta(q_1, j) &= \{q_0\} & \delta(q_3, j) &= \emptyset
+\end{aligned}$$
+
+---
+
+## Full NFA Transition Details
+![NFA Transition](handwritten_nfa.jpe)
